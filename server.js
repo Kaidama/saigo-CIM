@@ -1,13 +1,12 @@
 import express from "express";
 import { json, urlencoded } from "body-parser";
+import mongoose from "mongoose";
 import morgan from "morgan";
 import cors from "cors";
-import mongoose from "mongoose";
+
 import usersRouter from "./routes/api/users";
 import postsRouter from "./routes/api/posts";
 import profileRouter from "./routes/api/profile";
-
-const app = express();
 
 import "dotenv/config";
 
@@ -20,13 +19,15 @@ mongoose
   .then(() => console.log("Connected to MONGODB ATLAS"))
   .catch(error => console.log(`error: `, error));
 
+const app = express();
+
 app.disable("x-powered-by");
+
 app.use(cors());
 app.use(json());
 app.use(urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.get("/", (req, res) => res.send("Hello World"));
 app.use("/api/users", usersRouter);
 app.use("/api/post", postsRouter);
 app.use("/api/profile", profileRouter);
